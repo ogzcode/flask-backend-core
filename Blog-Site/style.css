@@ -1,0 +1,300 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+body {
+    display: grid;
+    grid-template-areas: 
+        "nav nav"
+        "sidebar content"
+        "email contact"
+        "footer footer";
+    grid-template-columns: 1fr 3fr;
+    gap: 40px;
+    background-color: rgb(244, 242, 255);
+}
+
+nav {
+    grid-area: nav;
+    padding: 1rem 2rem;
+    text-align: center;
+    box-shadow: 0px 2px 2px rgba(0,0,0,.1);
+    background-color: white;
+}
+
+nav a {
+    text-decoration: none;
+    margin: 0 1rem;
+    font-size: 16px;
+    text-transform: uppercase;
+    color: gray;
+}
+
+nav a:hover {
+    color: rgb(136, 85, 136);
+}
+
+aside {
+    grid-area: sidebar;
+    margin-left: 1rem;
+    background-color: white;
+    border-radius: .25rem;
+    box-shadow: 0px 2px 2px rgba(0,0,0,.1);
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+aside a {
+    display: block;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 1rem 0;
+    color: black;
+    opacity: .5;
+}
+
+aside a:hover {
+    background-color: rgba(0,0,0,.1);
+}
+
+aside a i {
+    margin-right: 1rem;
+    font-size: 24px;
+}
+
+section {
+    grid-area: content;
+    margin-right: 40px;
+}
+
+article {
+    margin-bottom: 2rem;
+    background-color: white;
+    box-shadow: 0px 2px 2px rgba(0,0,0,.1);
+    padding: 2rem;
+    border-radius: .25rem;
+    cursor: pointer;
+}
+
+article h1 {
+    font-size: 24px;
+    opacity: .7;
+    margin-bottom: .75rem;
+}
+
+article p {
+    font-size: 14px;
+    letter-spacing: 1px;
+    opacity: .5;
+    margin-bottom: 1rem;
+}
+
+article div {
+    display: flex;
+    justify-content: flex-end;
+}
+
+button {
+    border: 1px solid rgb(136, 85, 136);
+    border-radius: .25rem;
+    background-color: transparent;
+    padding: .5rem .75rem;
+    color: rgb(136, 85, 136);
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: rgb(136, 85, 136);
+    color: white;
+}
+
+.email {
+    grid-area: email;
+    margin-left: 1rem;
+    text-align: center;
+    background-color: white;
+    border-radius: .25rem;
+    padding: 2rem;
+    box-shadow: 0px 2px 2px rgba(0,0,0,.1);
+}
+
+.email p {
+    color: gray;
+    text-transform: uppercase;
+}
+
+.email input {
+    width: 100%;
+    margin: .75rem 0;
+    padding: .5rem .75rem;
+    border: 1px solid gray;
+    outline: none;
+    border-radius: .25rem;
+    color: rgb(61, 61, 61);
+}
+
+.email input:focus {
+    border-color: rgb(136, 85, 136);
+}
+
+.email button {
+    display: block;
+    width: 100%;
+}
+
+.social {
+    grid-area: contact;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: white;
+    box-shadow: 0px 2px 2px rgba(0,0,0,.1);
+    border-radius: .25rem;
+    margin-right: 40px;
+}
+
+.social p {
+    font-size: 24px;
+    color: gray;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+.social div i {
+    margin: 0 1rem;
+    font-size: 24px;
+    padding: .75rem;
+    border: 1px solid gray;
+    border-radius: .5rem;
+    transition: .2s;
+}
+
+.fa-facebook {
+    color: #3b5998;
+}
+
+.fa-facebook:hover {
+    color: white;
+    background-color: #3b5998;
+    border-color: #3b5998;
+
+}
+
+.fa-codepen {
+    color: black;
+}
+
+.fa-codepen:hover {
+    color: white;
+    background-color: black;
+    border-color: black;
+
+}
+
+.fa-twitter {
+    color: #1DA1F2;
+}
+
+.fa-twitter:hover {
+    color: white;
+    background-color: #1DA1F2;
+    border-color: #1DA1F2;
+}
+
+.fa-instagram {
+    color: #E1306C;
+}
+
+.fa-instagram:hover {
+    color: white;
+    background: #E1306C;
+    border-color: #E1306C;
+}
+
+.fa-google {
+    color: #DB4437;
+}
+
+.fa-google:hover {
+    color: white;
+    background-color: #DB4437;
+    border-color: #DB4437;
+}
+
+footer {
+    grid-area: footer;
+    text-align: center;
+    background-color: rgb(68, 68, 68);
+    color: white;
+    padding: 1rem 0;
+}
+
+@media screen and (max-width: 1000px) {
+    body {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas: 
+        "nav nav"
+        "content content"
+        "email contact"
+        "footer footer"
+        ;
+    }
+    aside {
+        display: none;
+    }
+
+    section {
+        margin-left: 40px;
+    }
+
+    article p:nth-child(2) {
+        display: none;
+    }
+
+    article:nth-child(4) {
+        margin-bottom: 0rem;
+    }
+
+    .email {
+        margin-left: 40px;
+    }
+
+    .social {
+        padding: 2rem 0;
+    }
+
+    .social p {
+        font-size: 20px;
+    }
+
+    .social div i {
+        margin: 0 .5rem;
+        font-size: 20px;
+        padding: .5rem;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    body {
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+        "nav"
+        "content"
+        "contact"
+        "email"
+        "footer"
+        ;
+    }
+
+    .email {
+        margin-right: 40px;
+    }
+
+    .social {
+        margin-left: 40px;
+    }
+}
