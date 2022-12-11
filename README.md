@@ -1,4 +1,4 @@
-# CssGridWork
+# Css Grid Çalışmalarım
 Css in Grid yerleşim özelliğini kullanarak geliştirdiğim örnek projeler.
 
 ### Kullandığım Teknolojiler
