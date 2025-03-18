@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('superadmin_routes.static', filename='css/halfmoon.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('superadmin_routes.static', filename='css/halfmoon.cores.css') }}">
+    <title>Superadmin</title>
+</head>
+<body>
+    {% block content %}
+    {% endblock %}
+    <script src="{{ url_for('superadmin_routes.static', filename='js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>

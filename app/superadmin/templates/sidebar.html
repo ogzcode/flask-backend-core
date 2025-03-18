@@ -1,0 +1,29 @@
+<nav class="sidebar offcanvas-start offcanvas-md" tabindex="-1" id="sidebar-example">
+    <div class="offcanvas-header border-bottom border-secondary border-opacity-25">
+        <a class="sidebar-brand" href="{{ url_for('superadmin_routes.superadmin_table', table_name='users') }}">
+            Admin Panel
+        </a>
+        <button type="button" class="btn-close d-md-none" data-bs-dismiss="offcanvas" aria-label="Close"
+            data-bs-target="#sidebar-example"></button>
+    </div>
+    <div class="offcanvas-body">
+        <ul class="sidebar-nav">
+            <li>
+                <h6 class="sidebar-header">Tables</h6>
+            </li>
+            <li>
+                <hr class="sidebar-divider">
+            </li>
+            {% for table_name in table_names %}
+            <li class="nav-item">
+                <a class="nav-link text-capitalize text-dark 
+                    {% if table_name == request.view_args.get('table_name') %}
+                        active
+                    {% endif %}" href="{{ url_for('superadmin_routes.superadmin_table', table_name=table_name) }}">
+                    {{ table_name }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</nav>
