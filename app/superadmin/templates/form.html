@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% include "sidebar.html" %}
+<div class="container-fluid">
+    <h1 class="text-capitalize">{{ action }} {{ table_name }}</h1>
+    <form method="POST">
+        {% for column in columns %}
+            {% if column != 'id' %}
+            <div class="mb-3">
+                <label for="{{ column }}" class="form-label">{{ column }}</label>
+                
+                {% if column_types[column] == 'boolean' %}
+                    <div class="form-check">
+                        <input type="checkbox" 
+                               class="form-check-input" 
+                               id="{{ column }}" 
+                               name="{{ column }}" 
+                               {% if item and item[column] %}checked{% endif %}>
+                    </div>
+                
+                {% elif column_types[column].startswith('enum') %}
+                    <select class="form-select" id="{{ column }}" name="{{ column }}">
+                        {% for enum_value in enum_values[column] %}
+                            <option value="{{ enum_value }}"
+                                    {% if item and item[column] == enum_value %}selected{% endif %}>
+                                {{ enum_value }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                
+                {% else %}
+                    <input type="text" 
+                           class="form-control" 
+                           id="{{ column }}" 
+                           name="{{ column }}" 
+                           value="{{ item[column] if item else '' }}">
+                {% endif %}
+            </div>
+            {% endif %}
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Kaydet</button>
+        <a href="/superadmin/table/{{ table_name }}" class="btn btn-secondary">İptal</a>
+    </form>
+</div>
+{% endblock %} 

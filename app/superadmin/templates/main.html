@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% include "sidebar.html" %}
+<div class="container-fluid">
+    <h1 class="text-capitalize">{{ table_name }}</h1>
+    
+    <!-- Arama ve Butonlar -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="input-group">
+                <input type="text" id="searchInput" class="form-control" placeholder="Ara...">
+                <button class="btn btn-outline-secondary" type="button" onclick="handleSearch()">
+                    <i class="fas fa-search"></i> Ara
+                </button>
+            </div>
+        </div>
+        <div class="col-md-6 text-end">
+            <a href="/superadmin/table/{{ table_name }}/add" class="btn btn-primary">Add</a>
+            <button id="deleteSelected" class="btn btn-danger" style="display: none;">Seçilenleri Sil</button>
+            <button id="updateSelected" class="btn btn-warning" style="display: none;">Seçileni Güncelle</button>
+        </div>
+    </div>
+
+    <!-- Tablo -->
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th><input type="checkbox" id="selectAll"></th>
+                {% for column in columns %}
+                <th>{{ column }}</th>
+                {% endfor %}
+                <th>İşlemler</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            {% for row in table_data %}
+            <tr>
+                <td><input type="checkbox" class="row-checkbox" value="{{ row.id }}"></td>
+                {% for column in columns %}
+                <td style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                    {% if column_types[column] == 'boolean' %}
+                        <input type="checkbox" 
+                               class="form-check-input" 
+                               {% if row[column] %}checked{% endif %}
+                               onchange="handleQuickUpdate('{{ row.id }}', '{{ column }}', this.checked)">
+                    {% else %}
+                        {{ row[column] }}
+                    {% endif %}
+                </td>
+                {% endfor %}
+                <td>
+                    <a href="/superadmin/table/{{ table_name }}/edit/{{ row.id }}" class="btn btn-sm btn-warning">Düzenle</a>
+                    <button onclick="deleteItem({{ row.id }})" class="btn btn-sm btn-danger">Sil</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+document.getElementById('selectAll').addEventListener('change', function() {
+    const checkboxes = document.getElementsByClassName('row-checkbox');
+    for (let checkbox of checkboxes) {
+        checkbox.checked = this.checked;
+    }
+    updateDeleteButton();
+});
+
+const rowCheckboxes = document.getElementsByClassName('row-checkbox');
+for (let checkbox of rowCheckboxes) {
+    checkbox.addEventListener('change', updateDeleteButton);
+}
+
+function updateDeleteButton() {
+    const checkedBoxes = document.querySelectorAll('.row-checkbox:checked');
+    document.getElementById('deleteSelected').style.display = checkedBoxes.length > 0 ? 'inline-block' : 'none';
+}
+
+function deleteItem(id) {
+    if (confirm('Bu öğeyi silmek istediğinizden emin misiniz?')) {
+        fetch(`/superadmin/table/{{ table_name }}/delete/${id}`, {
+            method: 'POST'
+        }).then(response => {
+            if (response.ok) {
+                location.reload();
+            }
+        });
+    }
+}
+
+document.getElementById('deleteSelected').addEventListener('click', function() {
+    if (confirm('Seçili öğeleri silmek istediğinizden emin misiniz?')) {
+        const selectedIds = Array.from(document.querySelectorAll('.row-checkbox:checked'))
+            .map(checkbox => checkbox.value);
+        
+        fetch(`/superadmin/table/{{ table_name }}/delete-multiple`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ ids: selectedIds })
+        }).then(response => {
+            if (response.ok) {
+                location.reload();
+            }
+        });
+    }
+});
+
+function handleQuickUpdate(id, column, value) {
+    fetch(`/superadmin/table/{{ table_name }}/quick-update/${id}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            column: column,
+            value: value
+        })
+    }).then(response => {
+        if (!response.ok) {
+            alert('Güncelleme başarısız oldu!');
+            location.reload();
+        }
+    });
+}
+
+function handleSearch() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    fetch(`/superadmin/table/{{ table_name }}/search?term=${encodeURIComponent(searchTerm)}`)
+        .then(response => response.json())
+        .then(data => {
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = data.html;
+        });
+}
+
+// Enter tuşu ile arama
+document.getElementById('searchInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        handleSearch();
+    }
+});
+</script>
+{% endblock %}

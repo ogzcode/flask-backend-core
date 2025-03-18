@@ -1,0 +1,21 @@
+{% for row in table_data %}
+<tr>
+    <td><input type="checkbox" class="row-checkbox" value="{{ row.id }}"></td>
+    {% for column in columns %}
+    <td>
+        {% if column_types[column] == 'boolean' %}
+            <input type="checkbox" 
+                   class="form-check-input" 
+                   {% if row[column] %}checked{% endif %}
+                   onchange="handleQuickUpdate('{{ row.id }}', '{{ column }}', this.checked)">
+        {% else %}
+            {{ row[column] }}
+        {% endif %}
+    </td>
+    {% endfor %}
+    <td>
+        <a href="/superadmin/table/{{ table_name }}/edit/{{ row.id }}" class="btn btn-sm btn-warning">Düzenle</a>
+        <button onclick="deleteItem({{ row.id }})" class="btn btn-sm btn-danger">Sil</button>
+    </td>
+</tr>
+{% endfor %} 
