@@ -8,6 +8,7 @@ class User(db.Model):
     username = db.Column(db.String(64), unique=True, index=True)
     email = db.Column(db.String(64), unique=True, index=True)
     password = db.Column(db.String(128))
+    is_superadmin = db.Column(db.Boolean, default=False)
 
     def set_password(self, password):
         self.password = generate_password_hash(password)
