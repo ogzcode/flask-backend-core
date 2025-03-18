@@ -13,8 +13,10 @@ migrate = Migrate(app, db)
 
 
 from app.routes import auth_routes
+from app.superadmin import superadmin_routes
 
 app.register_blueprint(auth_routes)
+app.register_blueprint(superadmin_routes)
 
 
 @app.route("/")

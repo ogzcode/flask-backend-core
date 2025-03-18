@@ -29,5 +29,33 @@ def downgrade(revision):
     os.system(f'flask db downgrade {revision}')
 
 
+@cli.command()
+@click.option('--username', required=True, help='Superadmin username')
+@click.option('--email', required=True, help='Superadmin email')
+@click.option('--password', required=True, help='Superadmin password', hide_input=True)
+def create_superadmin(username, email, password):
+    from app import app, db
+    from app.models import User
+    
+    with app.app_context():
+        if User.query.filter_by(is_superadmin=True).first():
+            click.echo("⛔ System already has a superadmin user")
+            return
+            
+        try:
+            new_user = User(
+                username=username,
+                email=email,
+                is_superadmin=True,
+            )
+            new_user.set_password(password)
+            db.session.add(new_user)
+            db.session.commit()
+            click.echo(f"✅ {username} created as superadmin")
+        except Exception as e:
+            db.session.rollback()
+            click.echo(f"❌ Error: {str(e)}")
+
+
 if __name__ == '__main__':
     cli()
